@@ -36,6 +36,24 @@ class Acl
         $perms = Acl::permissionsForUserByArray($userID, $accessRights);
         $perms = Acl::permissionsForUserIdAccessId($userID, $accessID);
     }
+    
+    public static function accessGrantedByArray($accessRights = null, $requiredPermissions = null)
+    {
+    	if ($requiredPermissions == null || $accessRights == null) {
+    		return true;
+    	}
+    	
+		if (!Auth::check()) {
+			return false;
+		}
+
+		$user = Auth::getUser();
+		$userPermissions = Acl::permissionsForUserByArray($user->getKey(), $accessRights);
+		
+		$intersected = array_intersect($requiredPermissions, $userPermissions);
+		
+		return (count($intersected) > 0);
+    }
 
     /**
      * Update roles of user by specified in $groupIDs
