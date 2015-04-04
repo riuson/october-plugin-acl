@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Group
+
+# Model Form Field configuration
+form: $/riuson/acl/models/group/fields.yaml
+
+# Model Class name
+modelClass: Riuson\ACL\Models\Group
+
+# Default redirect location
+defaultRedirect: riuson/acl/groups
+
+# Create page
+create:
+    title: Create Group
+    redirect: riuson/acl/groups/update/:id
+    redirectClose: riuson/acl/groups
+
+# Update page
+update:
+    title: Edit Group
+    redirect: riuson/acl/groups
+    redirectClose: riuson/acl/groups
+
+# Preview page
+preview:
+    title: Preview Group

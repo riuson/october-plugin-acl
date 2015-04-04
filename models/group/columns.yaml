@@ -6,3 +6,12 @@ columns:
     id:
         label: ID
         searchable: true
+    name:
+        label: Name
+        searchable: true
+    description:
+        label: Descrription
+        searchable: true
+    level:
+        label: Level
+        type: number
