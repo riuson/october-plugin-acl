@@ -33,7 +33,10 @@ class UserGroup extends Model
      *
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = [
+    		'user_id',
+    		'group_id'
+    ];
 
     /**
      *

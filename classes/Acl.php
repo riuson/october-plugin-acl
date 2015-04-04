@@ -38,9 +38,30 @@ class Acl
     }
 
     /**
+     * Update roles of user by specified in $groupIDs
+     *
+     * @param integer $userID            
+     * @param array $groupIDs            
+     */
+    public static function updateRolesForUser($userID, $groupIDs)
+    {
+        // remove obsolete
+        UserGroupModel::whereNotIn('group_id', $groupIDs)->where('user_id', '=', $userID)->delete();
+        
+        foreach ($groupIDs as $groupID) {
+            UserGroupModel::firstOrCreate([
+                'user_id' => $userID,
+                'group_id' => $groupID
+            ]);
+        }
+    }
+
+    /**
      * Return array of permission names
-     * @param integer $userID
-     * @param multitype $accessRights Source array of groups and permissions
+     *
+     * @param integer $userID            
+     * @param multitype $accessRights
+     *            Source array of groups and permissions
      * @return multitype: Array of permission names
      */
     public static function permissionsForUserByArray($userID, $accessRights)
