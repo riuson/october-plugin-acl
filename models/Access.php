@@ -15,6 +15,11 @@ class Access extends Model
      */
     public $table = 'riuson_acl_accesses';
 
+    public static function getTableName()
+    {
+        return 'riuson_acl_accesses';
+    }
+
     /**
      *
      * @var array Guarded fields

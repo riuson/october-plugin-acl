@@ -1,5 +1,4 @@
 <?php
-
 namespace Riuson\ACL\Models;
 
 use Model;
@@ -15,6 +14,11 @@ class Permission extends Model
      * @var string The database table used by the model.
      */
     public $table = 'riuson_acl_permissions';
+
+    public static function getTableName()
+    {
+        return 'riuson_acl_permissions';
+    }
 
     /**
      *

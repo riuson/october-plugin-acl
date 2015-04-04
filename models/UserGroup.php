@@ -1,4 +1,5 @@
 <?php
+
 namespace Riuson\ACL\Models;
 
 use Model;
@@ -14,6 +15,11 @@ class UserGroup extends Model
      * @var string The database table used by the model.
      */
     public $table = 'riuson_acl_user_groups';
+
+    public static function getTableName()
+    {
+        return 'riuson_acl_user_groups';
+    }
 
     /**
      *

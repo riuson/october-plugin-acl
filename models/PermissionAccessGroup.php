@@ -15,6 +15,11 @@ class PermissionAccessGroup extends Model
      */
     public $table = 'riuson_acl_permission_access_groups';
 
+    public static function getTableName()
+    {
+        return 'riuson_acl_permission_access_groups';
+    }
+
     /**
      *
      * @var array Guarded fields
