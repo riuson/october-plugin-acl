@@ -1,6 +1,9 @@
-<?php namespace Riuson\ACL;
+<?php
+
+namespace Riuson\ACL;
 
 use System\Classes\PluginBase;
+use RainLab\User\Models\User as UserModel;
 
 /**
  * ACL Plugin Information File
@@ -16,10 +19,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'ACL',
+            'name' => 'ACL',
             'description' => 'Provides simple access control',
-            'author'      => 'Riuson',
-            'icon'        => 'icon-leaf'
+            'author' => 'Riuson',
+            'icon' => 'icon-leaf'
         ];
     }
 
