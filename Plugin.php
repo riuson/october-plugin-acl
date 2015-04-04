@@ -26,4 +26,12 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function boot()
+    {
+        UserModel::extend(function ($model) {
+            $model->hasMany['groups'] = [
+                'riuson\ACL\Models\UserGroup'
+            ];
+        });
+    }
 }

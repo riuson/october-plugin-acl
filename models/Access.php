@@ -1,5 +1,4 @@
 <?php
-
 namespace Riuson\ACL\Models;
 
 use Model;
@@ -36,7 +35,9 @@ class Access extends Model
      */
     public $hasOne = [];
 
-    public $hasMany = [];
+    public $hasMany = [
+        'permissions' => 'Riuson\ACL\Models\PermissionAccessGroup'
+    ];
 
     public $belongsTo = [];
 

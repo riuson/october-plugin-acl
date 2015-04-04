@@ -1,5 +1,4 @@
 <?php
-
 namespace Riuson\ACL\Models;
 
 use Model;
@@ -34,7 +33,11 @@ class PermissionAccessGroup extends Model
      *
      * @var array Relations
      */
-    public $hasOne = [];
+    public $hasOne = [
+        'group' => 'Riuson\ACL\Models\Group',
+        'access' => 'Riuson\ACL\Models\Access',
+        'permission' => 'Riuson\ACL\Models\Permission'
+    ];
 
     public $hasMany = [];
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Riuson\ACL\Models;
 
 use Model;
@@ -34,11 +33,19 @@ class UserGroup extends Model
      *
      * @var array Relations
      */
-    public $hasOne = [];
+    public $hasOne = [
+        'group' => [
+            'Riuson\ACL\Models\Group'
+        ]
+    ];
 
     public $hasMany = [];
 
-    public $belongsTo = [];
+    public $belongsTo = [
+        'user' => [
+            'RainLab\User\Models\User'
+        ]
+    ];
 
     public $belongsToMany = [];
 
