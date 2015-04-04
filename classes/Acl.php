@@ -37,6 +37,35 @@ class Acl
         $perms = Acl::permissionsForUserIdAccessId($userID, $accessID);
     }
     
+    /**
+     * Returns groups of the specified user.
+     * If user not specified, then used current user.
+     * If no user active, then asuumed guest.
+     * @param string $userID
+     * @return array
+     */
+    public static function userGroups($userID = null)
+    {
+    	if ($userID == null) {
+        	if (Auth::check()) {
+    	       $user = Auth::getUser();
+    	       $userID = $user->getKey();
+        	}
+    	}
+    	
+    	if ($userID == null) {
+    		$guestGroup = GroupModel::orderBy('level', 'asc')->first();
+    		return $guestGroup->name;
+    	}
+
+    	$userGroups = DB::table(UserGroupModel::getTableName())
+    	   ->leftJoin(GroupModel::getTableName(), GroupModel::getTableName() . '.' . 'id', '=', UserGroupModel::getTableName() . '.' . 'group_id')
+    	   ->where(UserGroupModel::getTableName() . '.' . 'user_id', '=', $userID)
+    	   ->lists('name');
+    	
+    	return $userGroups;
+    }
+    
     public static function accessGrantedByArray($accessRights = null, $requiredPermissions = null)
     {
     	if ($requiredPermissions == null || $accessRights == null) {
