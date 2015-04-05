@@ -1,5 +1,4 @@
 <?php
-
 namespace Riuson\ACL\Updates;
 
 use Schema;

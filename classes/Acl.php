@@ -18,10 +18,10 @@ class Acl
         $accessRecord = AccessModel::find(1);
         $user = Auth::getUser();
         $groups = $user->groups;
-        
+
         $accessID = $accessRecord->getKey();
         $userID = $user->getKey();
-        
+
         $accessRights = [
             'guest' => [
                 'view',
@@ -32,69 +32,69 @@ class Acl
                 'delete'
             ]
         ];
-        
+
         $perms = Acl::permissionsForUserByArray($userID, $accessRights);
         $perms = Acl::permissionsForUserIdAccessId($userID, $accessID);
     }
-    
+
     /**
      * Returns groups of the specified user.
      * If user not specified, then used current user.
      * If no user active, then asuumed guest.
+     *
      * @param string $userID
      * @return array
      */
     public static function userGroups($userID = null)
     {
-    	if ($userID == null) {
-        	if (Auth::check()) {
-    	       $user = Auth::getUser();
-    	       $userID = $user->getKey();
-        	}
-    	}
-    	
-    	if ($userID == null) {
-    		$guestGroup = GroupModel::orderBy('level', 'asc')->first();
-    		return $guestGroup->name;
-    	}
+        if ($userID == null) {
+            if (Auth::check()) {
+                $user = Auth::getUser();
+                $userID = $user->getKey();
+            }
+        }
 
-    	$userGroups = DB::table(UserGroupModel::getTableName())
-    	   ->leftJoin(GroupModel::getTableName(), GroupModel::getTableName() . '.' . 'id', '=', UserGroupModel::getTableName() . '.' . 'group_id')
-    	   ->where(UserGroupModel::getTableName() . '.' . 'user_id', '=', $userID)
-    	   ->lists('name');
-    	
-    	return $userGroups;
+        if ($userID == null) {
+            $guestGroup = GroupModel::orderBy('level', 'asc')->first();
+            return $guestGroup->name;
+        }
+
+        $userGroups = DB::table(UserGroupModel::getTableName())->leftJoin(GroupModel::getTableName(), GroupModel::getTableName() . '.' . 'id', '=', UserGroupModel::getTableName() . '.' . 'group_id')
+            ->where(UserGroupModel::getTableName() . '.' . 'user_id', '=', $userID)
+            ->lists('name');
+
+        return $userGroups;
     }
-    
+
     public static function accessGrantedByArray($accessRights = null, $requiredPermissions = null)
     {
-    	if ($requiredPermissions == null || $accessRights == null) {
-    		return true;
-    	}
-    	
-		if (!Auth::check()) {
-			return false;
-		}
+        if ($requiredPermissions == null || $accessRights == null) {
+            return true;
+        }
 
-		$user = Auth::getUser();
-		$userPermissions = Acl::permissionsForUserByArray($user->getKey(), $accessRights);
-		
-		$intersected = array_intersect($requiredPermissions, $userPermissions);
-		
-		return (count($intersected) > 0);
+        if (! Auth::check()) {
+            return false;
+        }
+
+        $user = Auth::getUser();
+        $userPermissions = Acl::permissionsForUserByArray($user->getKey(), $accessRights);
+
+        $intersected = array_intersect($requiredPermissions, $userPermissions);
+
+        return (count($intersected) > 0);
     }
 
     /**
      * Update roles of user by specified in $groupIDs
      *
-     * @param integer $userID            
-     * @param array $groupIDs            
+     * @param integer $userID
+     * @param array $groupIDs
      */
     public static function updateRolesForUser($userID, $groupIDs)
     {
         // remove obsolete
         UserGroupModel::whereNotIn('group_id', $groupIDs)->where('user_id', '=', $userID)->delete();
-        
+
         foreach ($groupIDs as $groupID) {
             UserGroupModel::firstOrCreate([
                 'user_id' => $userID,
@@ -106,7 +106,7 @@ class Acl
     /**
      * Return array of permission names
      *
-     * @param integer $userID            
+     * @param integer $userID
      * @param multitype $accessRights
      *            Source array of groups and permissions
      * @return multitype: Array of permission names
@@ -128,7 +128,7 @@ class Acl
          * ]
          * ];
          */
-        
+
         /*
          * Select groups of the user
          *
@@ -143,17 +143,17 @@ class Acl
             ->where(UserGroupModel::getTableName() . '.' . 'user_id', '=', $userID)
             ->select(GroupModel::getTableName() . '.' . 'name', GroupModel::getTableName() . '.' . 'level')
             ->get();
-        
+
         $result = array();
-        
+
         foreach ($groups as $group) {
             if (array_key_exists($group->name, $accessRights)) {
                 $result = array_merge($result, $accessRights[$group->name]);
             }
         }
-        
+
         $result = array_unique($result);
-        
+
         return $result;
     }
 
@@ -185,7 +185,7 @@ class Acl
             ->where(PermissionAccessGroupModel::getTableName() . '.' . 'access_id', '=', $accessID)
             ->select(PermissionModel::getTableName() . '.' . 'name')
             ->get();
-        
+
         return $result;
     }
 }

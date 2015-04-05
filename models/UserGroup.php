@@ -1,5 +1,4 @@
 <?php
-
 namespace Riuson\ACL\Models;
 
 use Model;
@@ -34,8 +33,8 @@ class UserGroup extends Model
      * @var array Fillable fields
      */
     protected $fillable = [
-    		'user_id',
-    		'group_id'
+        'user_id',
+        'group_id'
     ];
 
     /**
