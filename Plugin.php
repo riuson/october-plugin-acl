@@ -34,7 +34,7 @@ class Plugin extends PluginBase
         // extend Rainlab.User model
         UserModel::extend(function ($model) {
             $model->hasMany['groups'] = [
-                'riuson\ACL\Models\UserGroup'
+                'Riuson\ACL\Models\UserGroup'
             ];
         });
 
