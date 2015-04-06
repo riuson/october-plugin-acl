@@ -90,9 +90,13 @@ class Acl
         $user = Auth::getUser();
         $userPermissions = Acl::permissionsForUserByArray($user->getKey(), $accessRights);
 
-        $intersected = array_intersect($requiredPermissions, $userPermissions);
+        $intersection = array_intersect($requiredPermissions, $userPermissions);
 
-        return (count($intersected) > 0);
+        if (empty($intersection)) {
+            return false;
+        }
+
+        return (count($intersection) > 0);
     }
 
     /**
