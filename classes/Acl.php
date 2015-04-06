@@ -66,6 +66,15 @@ class Acl
         return $userGroups;
     }
 
+    /**
+     * Check for access allowed for current user by defined array $accessRights and list $requiredPermissions
+     *
+     * @param array $accessRights
+     *            Defition of access rights by groups
+     * @param string $requiredPermissions
+     *            List of required permissions
+     * @return boolean
+     */
     public static function accessGrantedByArray($accessRights = null, $requiredPermissions = null)
     {
         if ($requiredPermissions == null || $accessRights == null) {
@@ -85,7 +94,7 @@ class Acl
     }
 
     /**
-     * Update roles of user by specified in $groupIDs
+     * Update roles of $userID by specified in array $groupIDs
      *
      * @param integer $userID
      * @param array $groupIDs
@@ -112,7 +121,7 @@ class Acl
     }
 
     /**
-     * Return array of permission names
+     * Return array of permission names for specified $userID from array $accessRights
      *
      * @param integer $userID
      * @param multitype $accessRights
@@ -166,7 +175,7 @@ class Acl
     }
 
     /**
-     * Returns array of permission names
+     * Returns array of existing permissions for specified $userID and $accessID
      *
      * @param integer $userID
      *            User ID
