@@ -56,7 +56,9 @@ class Acl
 
         if ($userID == null) {
             $guestGroup = GroupModel::orderBy('level', 'asc')->first();
-            return $guestGroup->name;
+            return [
+                $guestGroup->name
+            ];
         }
 
         $userGroups = DB::table(UserGroupModel::getTableName())->leftJoin(GroupModel::getTableName(), GroupModel::getTableName() . '.' . 'id', '=', UserGroupModel::getTableName() . '.' . 'group_id')
