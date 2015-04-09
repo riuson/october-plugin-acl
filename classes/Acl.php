@@ -108,15 +108,19 @@ class Acl
     public static function updateRolesForUser($userID, $groupIDs)
     {
         if ($userID != null) {
-            // remove obsolete
-            UserGroupModel::whereNotIn('group_id', $groupIDs)->where('user_id', '=', $userID)->delete();
-
+            // add user group
             $userGroup = GroupModel::whereName('user')->first();
 
             if (! empty($userGroup)) {
-                $groupIDs[$userID] = $userGroup->getKey();
+                if (! in_array($userGroup->getKey(), $groupIDs)) {
+                    array_push($groupIDs, $userGroup->getKey());
+                }
             }
 
+            // remove obsolete
+            UserGroupModel::whereNotIn('group_id', $groupIDs)->where('user_id', '=', $userID)->delete();
+
+            // add new
             foreach ($groupIDs as $groupID) {
                 UserGroupModel::firstOrCreate([
                     'user_id' => $userID,
