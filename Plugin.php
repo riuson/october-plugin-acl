@@ -47,13 +47,6 @@ class Plugin extends PluginBase
                     'code' => 'groups',
                     'owner' => 'RainLab.User',
                     'url' => \Backend::url('riuson/acl/groups')
-                ],
-                'permissions' => [
-                    'label' => 'Permissions',
-                    'icon' => 'icon-key',
-                    'code' => 'permissions',
-                    'owner' => 'RainLab.User',
-                    'url' => \Backend::url('riuson/acl/permissions')
                 ]
             ]);
         });

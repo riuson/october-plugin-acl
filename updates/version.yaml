@@ -1,8 +1,5 @@
 1.0.1: First version of ACL
 1.0.2:
     - Create tables
-    - create_accesses_table.php
     - create_groups_table.php
-    - create_permissions_table.php
     - create_user_groups_table.php
-    - create_permission_access_groups_table.php
