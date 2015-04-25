@@ -3,12 +3,8 @@ namespace Riuson\ACL\Classes;
 
 use Auth;
 use DB;
-use Riuson\ACL\Models\Access as AccessModel;
 use Riuson\ACL\Models\Group as GroupModel;
-use Riuson\ACL\Models\Permission as PermissionModel;
-use Riuson\ACL\Models\PermissionAccessGroup as PermissionAccessGroupModel;
 use Riuson\ACL\Models\UserGroup as UserGroupModel;
-use Riuson\ACL\Models\Permission;
 
 class Acl
 {
@@ -35,6 +31,34 @@ class Acl
 
         $perms = Acl::permissionsForUserByArray($userID, $accessRights);
         $perms = Acl::permissionsForUserIdAccessId($userID, $accessID);
+    }
+
+    /**
+     * Returns true, if user is in one of required groups
+     *
+     * @param array $requiredGroups
+     * @param integer $userID
+     * @return boolean
+     */
+    public static function isUserInGroups($requiredGroups = null, $userID = null)
+    {
+        if (empty($requiredGroups)) {
+            return true;
+        }
+
+        $userGroups = Acl::userGroups($userID);
+
+        if (is_string($requiredGroups)) {
+            $requiredGroups = array_map('trim', explode(',', $requiredGroups));
+        }
+
+        $intersection = array_intersect($userGroups, $requiredGroups);
+
+        if (empty($intersection)) {
+            return false;
+        }
+
+        return (count($intersection) > 0);
     }
 
     /**
@@ -69,43 +93,12 @@ class Acl
     }
 
     /**
-     * Check for access allowed for current user by defined array $accessRights and list $requiredPermissions
-     *
-     * @param array $accessRights
-     *            Defition of access rights by groups
-     * @param string $requiredPermissions
-     *            List of required permissions
-     * @return boolean
-     */
-    public static function accessGrantedByArray($accessRights = null, $requiredPermissions = null)
-    {
-        if ($requiredPermissions == null || $accessRights == null) {
-            return true;
-        }
-
-        if (! Auth::check()) {
-            return false;
-        }
-
-        $user = Auth::getUser();
-        $userPermissions = Acl::permissionsForUserByArray($user->getKey(), $accessRights);
-
-        $intersection = array_intersect($requiredPermissions, $userPermissions);
-
-        if (empty($intersection)) {
-            return false;
-        }
-
-        return (count($intersection) > 0);
-    }
-
-    /**
-     * Update roles of $userID by specified in array $groupIDs
+     * Update groups of $userID by specified in array $groupIDs
      *
      * @param integer $userID
      * @param array $groupIDs
      */
-    public static function updateRolesForUser($userID, $groupIDs)
+    public static function updateGroupsForUser($userID, $groupIDs)
     {
         if ($userID != null) {
             // add user group
@@ -128,91 +121,5 @@ class Acl
                 ]);
             }
         }
-    }
-
-    /**
-     * Return array of permission names for specified $userID from array $accessRights
-     *
-     * @param integer $userID
-     * @param multitype $accessRights
-     *            Source array of groups and permissions
-     * @return multitype: Array of permission names
-     */
-    public static function permissionsForUserByArray($userID, $accessRights)
-    {
-        /*
-         * Access rights format:
-         * $access_rights = [
-         * ['group_name' => [
-         * 'permission_name',
-         * 'permission_name',
-         * 'permission_name'
-         * ],
-         * ['group_name' => [
-         * 'permission_name',
-         * 'permission_name',
-         * 'permission_name'
-         * ]
-         * ];
-         */
-
-        /*
-         * Select groups of the user
-         *
-         * select
-         * `riuson_acl_groups`.`name`, `riuson_acl_groups`.`level`
-         * from `riuson_acl_user_groups`
-         * left join `riuson_acl_groups` on `riuson_acl_groups`.`id` = `riuson_acl_user_groups`.`group_id`
-         * where
-         * `riuson_acl_user_groups`.`user_id` = 1;
-         */
-        $groups = DB::table(UserGroupModel::getTableName())->leftJoin(GroupModel::getTableName(), GroupModel::getTableName() . '.' . 'id', '=', UserGroupModel::getTableName() . '.' . 'group_id')
-            ->where(UserGroupModel::getTableName() . '.' . 'user_id', '=', $userID)
-            ->select(GroupModel::getTableName() . '.' . 'name', GroupModel::getTableName() . '.' . 'level')
-            ->get();
-
-        $result = array();
-
-        foreach ($groups as $group) {
-            if (array_key_exists($group->name, $accessRights)) {
-                $result = array_merge($result, $accessRights[$group->name]);
-            }
-        }
-
-        $result = array_unique($result);
-
-        return $result;
-    }
-
-    /**
-     * Returns array of existing permissions for specified $userID and $accessID
-     *
-     * @param integer $userID
-     *            User ID
-     * @param integer $accessID
-     *            Id of access record, associated with resource
-     * @return array Permission names
-     */
-    public static function permissionsForUserIdAccessId($userID, $accessID)
-    {
-        /*
-         * select
-         * `riuson_acl_permissions`.name
-         * from `riuson_acl_user_groups`
-         * left join `riuson_acl_permission_access_groups` on `riuson_acl_permission_access_groups`.`group_id` = `riuson_acl_user_groups`.`group_id`
-         * left join `riuson_acl_permissions` on `riuson_acl_permissions`.`id` = `riuson_acl_permission_access_groups`.`permission_id`
-         * where
-         * `riuson_acl_user_groups`.`user_id` = 1
-         * and `riuson_acl_permission_access_groups`.`access_id` = 1;
-         *
-         */
-        $result = DB::table(UserGroupModel::getTableName())->leftJoin(PermissionAccessGroupModel::getTableName(), PermissionAccessGroupModel::getTableName() . '.' . 'group_id', '=', UserGroupModel::getTableName() . '.' . 'group_id')
-            ->leftJoin(PermissionModel::getTableName(), PermissionModel::getTableName() . '.' . 'id', '=', PermissionAccessGroupModel::getTableName() . '.' . 'permission_id')
-            ->where(UserGroupModel::getTableName() . '.' . 'user_id', '=', $userID)
-            ->where(PermissionAccessGroupModel::getTableName() . '.' . 'access_id', '=', $accessID)
-            ->select(PermissionModel::getTableName() . '.' . 'name')
-            ->get();
-
-        return $result;
     }
 }

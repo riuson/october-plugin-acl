@@ -33,8 +33,13 @@ class Plugin extends PluginBase
     {
         // extend Rainlab.User model
         UserModel::extend(function ($model) {
-            $model->hasMany['groups'] = [
-                'Riuson\ACL\Models\UserGroup'
+            // $model->hasMany['groups'] = [
+            // 'Riuson\ACL\Models\UserGroup'
+            // ];
+            $model->belongsToMany['groups'] = [
+                'Riuson\ACL\Models\Group',
+                'table' => 'riuson_acl_user_groups',
+                'other_key' => 'group_id'
             ];
         });
 
@@ -47,15 +52,24 @@ class Plugin extends PluginBase
                     'code' => 'groups',
                     'owner' => 'RainLab.User',
                     'url' => \Backend::url('riuson/acl/groups')
-                ],
-                'permissions' => [
-                    'label' => 'Permissions',
-                    'icon' => 'icon-key',
-                    'code' => 'permissions',
-                    'owner' => 'RainLab.User',
-                    'url' => \Backend::url('riuson/acl/permissions')
                 ]
             ]);
+        });
+
+        \Event::listen('backend.form.extendFields', function ($widget) {
+            if (! $widget->getController() instanceof \RainLab\User\Controllers\Users)
+                return;
+            if (! $widget->model instanceof \RainLab\User\Models\User)
+                return;
+
+            $widget->addFields([
+                'groups' => [
+                    'label' => 'Groups',
+                    'commentAbove' => 'Specify which groups this person belongs to.',
+                    'tab' => 'Groups',
+                    'type' => 'relation'
+                ]
+            ], 'primary');
         });
     }
 }
