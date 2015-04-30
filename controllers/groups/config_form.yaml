@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Group
+name: riuson.acl::lang.backend_group.record_name_group
 
 # Model Form Field configuration
 form: $/riuson/acl/models/group/fields.yaml
@@ -16,16 +16,16 @@ defaultRedirect: riuson/acl/groups
 
 # Create page
 create:
-    title: Create Group
+    title: riuson.acl::lang.backend_group.create_group
     redirect: riuson/acl/groups/update/:id
     redirectClose: riuson/acl/groups
 
 # Update page
 update:
-    title: Edit Group
+    title: riuson.acl::lang.backend_group.edit_group
     redirect: riuson/acl/groups
     redirectClose: riuson/acl/groups
 
 # Preview page
 preview:
-    title: Preview Group
+    title: riuson.acl::lang.backend_group.preview_group

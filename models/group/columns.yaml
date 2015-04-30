@@ -7,11 +7,11 @@ columns:
         label: ID
         searchable: true
     name:
-        label: Name
+        label: riuson.acl::lang.backend_group.name
         searchable: true
     description:
-        label: Descrription
+        label: riuson.acl::lang.backend_group.description
         searchable: true
     level:
-        label: Level
+        label: riuson.acl::lang.backend_group.level
         type: number
