@@ -65,7 +65,7 @@ class Plugin extends PluginBase
             $widget->addFields([
                 'groups' => [
                     'label' => 'riuson.acl::lang.backend_settings.groups_label',
-                    'commentAbove' => 'Specify which groups this person belongs to.',
+                    'commentAbove' => 'riuson.acl::lang.backend_settings.groups_field_comment_above',
                     'tab' => 'riuson.acl::lang.backend_settings.groups_label',
                     'type' => 'relation'
                 ]
