@@ -21,4 +21,10 @@ return [
         'return_to_list' => 'Return to Groups list',
         'delete_confirm' => 'Do you really want to delete this Group?',
     ],
+    'access_control' => [
+        'name' => 'Access Control',
+        'description' => 'Check for user have permissions',
+        'required_groups_title' => 'Required groups',
+        'required_groups_description' => 'Groups, allowed to access to page',
+    ],
 ];

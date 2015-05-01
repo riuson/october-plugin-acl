@@ -29,6 +29,13 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerComponents()
+    {
+        return [
+            'Riuson\ACL\Components\AccessControl' => 'accessControl',
+        ];
+    }
+
     public function boot()
     {
         // extend Rainlab.User model

@@ -24,5 +24,11 @@ return [
         'level' => 'Уровень',
         'description' => 'Описание',
     ],
+    'access_control' => [
+        'name' => 'Контроль доступа',
+        'description' => 'Проверка наличия у пользователя указанных групп',
+        'required_groups_title' => 'Требуемые группы',
+        'required_groups_description' => 'Группы, которым предоставляется доступ к странице',
+    ],
 ];
 
