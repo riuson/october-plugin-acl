@@ -9,7 +9,7 @@ list: $/riuson/acl/models/group/columns.yaml
 modelClass: Riuson\ACL\Models\Group
 
 # List Title
-title: Manage Groups
+title: riuson.acl::lang.backend_group.manage_groups
 
 # Link URL for each record
 recordUrl: riuson/acl/groups/update/:id

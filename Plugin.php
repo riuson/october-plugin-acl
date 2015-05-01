@@ -22,8 +22,8 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name' => 'ACL',
-            'description' => 'Provides simple access control',
+            'name' => 'riuson.acl::lang.plugin.name',
+            'description' => 'riuson.acl::lang.plugin.description',
             'author' => 'Riuson',
             'icon' => 'icon-leaf'
         ];
@@ -47,7 +47,7 @@ class Plugin extends PluginBase
         \Event::listen('backend.menu.extendItems', function ($manager) {
             $manager->addSideMenuItems('RainLab.User', 'user', [
                 'groups' => [
-                    'label' => 'Groups',
+                    'label' => 'riuson.acl::lang.backend_settings.groups_label',
                     'icon' => 'icon-users',
                     'code' => 'groups',
                     'owner' => 'RainLab.User',
@@ -64,9 +64,9 @@ class Plugin extends PluginBase
 
             $widget->addFields([
                 'groups' => [
-                    'label' => 'Groups',
-                    'commentAbove' => 'Specify which groups this person belongs to.',
-                    'tab' => 'Groups',
+                    'label' => 'riuson.acl::lang.backend_settings.groups_label',
+                    'commentAbove' => 'riuson.acl::lang.backend_settings.groups_field_comment_above',
+                    'tab' => 'riuson.acl::lang.backend_settings.groups_label',
                     'type' => 'relation'
                 ]
             ], 'primary');

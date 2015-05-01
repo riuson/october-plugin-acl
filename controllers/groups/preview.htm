@@ -1,7 +1,7 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('riuson/acl/groups') ?>">Groups</a></li>
-        <li><?= e($this->pageTitle) ?></li>
+        <li><a href="<?= Backend::url('riuson/acl/groups') ?>"><?= e(trans('riuson.acl::lang.backend_group.menu_label')) ?></a></li>
+        <li><?= e(trans($this->pageTitle)) ?></li>
     </ul>
 <?php Block::endPut() ?>
 
@@ -13,7 +13,7 @@
 
 <?php else: ?>
 
-    <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('riuson/acl/groups') ?>" class="btn btn-default">Return to groups list</a></p>
+    <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+    <p><a href="<?= Backend::url('riuson/acl/groups') ?>" class="btn btn-default"><?= e(trans('riuson.acl::lang.backend_group.return_to_list')) ?></a></p>
 
 <?php endif ?>

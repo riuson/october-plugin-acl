@@ -4,11 +4,11 @@
 
 fields:
     name:
-        label: Name
+        label: riuson.acl::lang.backend_group.name
         span: left
     level:
-        label: Level
+        label: riuson.acl::lang.backend_group.level
         type: number
         span: right
     description:
-        label: Description
+        label: riuson.acl::lang.backend_group.description
